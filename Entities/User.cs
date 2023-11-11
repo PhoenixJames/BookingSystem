@@ -7,8 +7,8 @@ namespace BookingSystem.Entities
   [Table("users")]
   public class User
   {
-    [Column("id")]
-    public long Id { get; set; }
+    [Column("user_id")]
+    public long UserId { get; set; }
 
     [Column("user_name")]
     public string? UserName { get; set; }

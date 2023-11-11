@@ -4,12 +4,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BookingSystem.Entities
 {
-  [Table("users")]
+  [Table("user_profile")]
   public class UserProfile
   {
-
-    [Column("id")]
-    public long Id { get; set; }
 
     [Column("user_id")]
     public long UserId { get; set; }

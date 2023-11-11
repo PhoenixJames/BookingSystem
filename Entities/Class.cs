@@ -8,8 +8,8 @@ namespace BookingSystem.Entities
   public class Class 
   {
 
-    [Column("id")]
-    public long Id { get; set; }
+    [Column("class_id")]
+    public long ClassId { get; set; }
 
     [Column("country")]
     public string? Country { get; set; }
