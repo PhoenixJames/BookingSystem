@@ -1,6 +1,8 @@
 using BookingSystem.Entities;
+using BookingSystem.Models;
 
 public interface IUserRepository : IRepository<User>
 {
-    // Add specific methods for User entity if needed
+  Task<UserModel> GetUserByUsernameAndPasswordAsync(string username, string password);
+
 }

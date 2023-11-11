@@ -1,7 +1,7 @@
 public interface IUnitOfWork : IDisposable
 {
     IUserRepository UserRepository { get; }
-    // Add other repositories as needed
 
+    IUserProfileRepository UserProfileRepository { get; }
     Task SaveChangesAsync();
 }
