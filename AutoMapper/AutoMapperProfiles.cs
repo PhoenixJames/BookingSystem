@@ -11,6 +11,9 @@ public class UserMappingProfile : Profile
 
         CreateMap<UserModel, User>();
         CreateMap<User, UserModel>();
+
+        CreateMap<EmailVerifyModel, User>();
+        CreateMap<User, EmailVerifyModel>();
     }
 }
 public class UserProfileMappingProfile : Profile 

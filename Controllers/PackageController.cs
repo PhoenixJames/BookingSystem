@@ -6,28 +6,27 @@ using BookingSystem.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.EntityFrameworkCore;
 
 namespace BookingSystem.Controllers;
 
 [Authorize]
 [ApiController]
 [Route("api/[controller]")]
-public class UserController : ControllerBase
+public class PackageController : ControllerBase
 {
   private readonly IUnitOfWork _unitOfWork;
   private readonly IMapper _mapper;
   private readonly IConfiguration _config;
 
 
-  public UserController(IUnitOfWork unitOfWork, IMapper mapper, IConfiguration config)
+  public PackageController(IUnitOfWork unitOfWork, IMapper mapper, IConfiguration config)
   {
     _unitOfWork = unitOfWork;
     _mapper = mapper;
     _config = config;
   }
 
-  [HttpGet("getAllUser")]
+  [HttpGet]
   public async Task<IActionResult> GetAllUsers()
   {
     try
@@ -40,27 +39,8 @@ public class UserController : ControllerBase
       return StatusCode(500, $"Internal server error: {ex.Message}");
     }
   }
-  [HttpGet("getUserById/{id}")]
-  public async Task<IActionResult> GetUserById(int id)
-  {
-    try
-    {
-      User user = await _unitOfWork.UserRepository.GetByIdAsync(id);
 
-      if (user == null)
-      {
-        return NotFound($"User with ID {id} not found");
-      }
-
-      return Ok(user);
-    }
-    catch (Exception ex)
-    {
-      return StatusCode(500, $"Internal server error: {ex.Message}");
-    }
-  }
-
-  [HttpPost]
+  [HttpPost("register")]
   public async Task<IActionResult> RegisterUser([FromBody] UserRegisterModel userData)
   {
     try
@@ -70,7 +50,6 @@ public class UserController : ControllerBase
         return BadRequest("User object is null");
       }
       User user = _mapper.Map<User>(userData);
-      user.IsActive = false;
       UserProfile userProfile = _mapper.Map<UserProfile>(userData);
       await _unitOfWork.UserRepository.AddAsync(user);
       // await _unitOfWork.SaveChangesAsync();
@@ -80,39 +59,6 @@ public class UserController : ControllerBase
 
       var newUser = await _unitOfWork.UserRepository.GetByIdAsync(user.UserId);
       return Ok(newUser);
-    }
-    catch (Exception ex)
-    {
-      return StatusCode(500, $"Internal server error: {ex.Message}");
-    }
-  }
-
-  [HttpGet("verifyEmail/{id}")]
-  [AllowAnonymous]
-  public async Task<IActionResult> verifyEmail(long id)
-  {
-    try
-    {
-      // Validate the request
-      if (id <= 0)
-      {
-        return BadRequest("Invalid request");
-      }
-
-      User data = await _unitOfWork.UserRepository.GetByIdAsync(id);
-      data.UserId = id;
-      data.IsActive = true;
-
-      await _unitOfWork.UserRepository.UpdateAsync(data);
-      await _unitOfWork.SaveChangesAsync();
-      User user = await _unitOfWork.UserRepository
-        .Query()
-        .Where(u => u.UserId == data.UserId).FirstOrDefaultAsync();
-      if (user.IsActive == true) {
-        return Ok("Email Verification Success");
-      } else {
-        return BadRequest("Email Verification Fail");
-      }
     }
     catch (Exception ex)
     {

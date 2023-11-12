@@ -14,7 +14,18 @@ public class UserRepository : Repository<User>, IUserRepository
 
   public async Task<UserModel> GetUserByUsernameAndPasswordAsync(string username, string password)
   {
-    User user = await Query().Where(u => u.UserName == username && u.Password == password).FirstOrDefaultAsync();
-    return _mapper.Map<UserModel>(user);
+    try
+    {
+      User user = await Query().Where(u => u.UserName == username && u.Password == password && u.IsActive == true).FirstOrDefaultAsync();
+      if (user != null && user.IsActive == false) {
+        throw new Exception("User is not active");
+      }
+      return _mapper.Map<UserModel>(user);
+    }
+    catch (System.Exception)
+    {
+
+      throw;
+    }
   }
 }

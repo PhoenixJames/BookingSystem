@@ -27,6 +27,9 @@ namespace BookingSystem.Models
     [JsonProperty("password")]
     public string? Password { get; set; }
 
+    [JsonProperty("isActive")]
+    public string? IsActive { get; set; }
+
     [JsonProperty("createdDate")]
     public DateTime CreatedDate { get; set; }
 
@@ -73,5 +76,13 @@ namespace BookingSystem.Models
 
     [JsonProperty("password")]
     public string? Password { get; set; }
+  }
+  public class EmailVerifyModel
+  {
+    [JsonProperty("userId")]
+    public long UserId { get; set; }
+
+    [JsonProperty("isActive")]
+    public bool IsActive { get; set; }
   }
 }

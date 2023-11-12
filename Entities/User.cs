@@ -21,6 +21,9 @@ namespace BookingSystem.Entities
 
     [Column("password")]
     public string? Password { get; set; }
+    
+    [Column("is_active")]
+    public bool IsActive { get; set; }
 
     [Column("created_date")]
     public DateTime CreatedDate { get; set; }
