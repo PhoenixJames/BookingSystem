@@ -11,9 +11,11 @@ namespace BookingSystem.Entities
     [Column("user_id")]
     public long UserId { get; set; }
 
-    [Key]
     [Column("package_id")]
     public long PackageId { get; set; }
+
+    [Column("user_credits")]
+    public int UserCredits { get; set; }
 
     [Column("purchase_date")]
     public DateTime PurchaseDate { get; set; }

@@ -23,6 +23,9 @@ namespace BookingSystem.Entities
     [Column("max_capacity")]
     public int MaxCapacity { get; set; }
 
+    [Column("duration")]
+    public int Duration { get; set; }
+
     [Column("created_date")]
     public DateTime CreatedDate { get; set; }
 

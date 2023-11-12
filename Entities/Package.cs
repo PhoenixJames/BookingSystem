@@ -23,6 +23,9 @@ namespace BookingSystem.Entities
     [Column("price")]
     public int Price { get; set; }
 
+    [Column("duration")]
+    public int Duration { get; set; }
+
     [Column("created_date")]
     public DateTime CreatedDate { get; set; }
 

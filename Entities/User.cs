@@ -13,6 +13,9 @@ namespace BookingSystem.Entities
     [Column("user_name")]
     public string? UserName { get; set; }
 
+    [Column("country")]
+    public string? Country { get; set; }
+
     [Column("email")]
     public string? Email { get; set; }
 
