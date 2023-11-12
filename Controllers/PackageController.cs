@@ -26,7 +26,7 @@ public class PackageController : ControllerBase
     _config = config;
   }
 
-  [HttpGet]
+  [HttpGet("getAllPackage")]
   public async Task<IActionResult> GetAllPackage()
   {
     try
