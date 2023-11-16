@@ -26,6 +26,9 @@ namespace BookingSystem.Entities
     [Column("duration")]
     public int Duration { get; set; }
 
+    [Column("is_active")]
+    public bool IsActive { get; set; }
+
     [Column("created_date")]
     public DateTime CreatedDate { get; set; }
 

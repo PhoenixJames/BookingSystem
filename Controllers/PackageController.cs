@@ -6,6 +6,7 @@ using BookingSystem.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookingSystem.Controllers;
 
@@ -33,6 +34,49 @@ public class PackageController : ControllerBase
     {
       var users = await _unitOfWork.PackageRepository.GetAllAsync();
       return Ok(users);
+    }
+    catch (Exception ex)
+    {
+      return StatusCode(500, $"Internal server error: {ex.Message}");
+    }
+  }
+
+  [HttpGet("getPackagesByCountry")]
+  public async Task<IActionResult> GetPackagesByCountry(string country)
+  {
+    try
+    {
+      var users = await _unitOfWork.PackageRepository
+        .Query()
+        .Where(p => p.Country == country).ToListAsync();
+      return Ok(users);
+    }
+    catch (Exception ex)
+    {
+      return StatusCode(500, $"Internal server error: {ex.Message}");
+    }
+  }
+
+  [HttpPost("purchasePackage")]
+  public async Task<IActionResult> PurchasePackage([FromBody] PurchasePackageModel req)
+  {
+    try
+    {
+      if (req == null)
+      {
+        return BadRequest("req body is null.");
+      }
+      User user = _mapper.Map<User>(userData);
+      user.IsActive = false;
+      UserProfile userProfile = _mapper.Map<UserProfile>(userData);
+      await _unitOfWork.UserRepository.AddAsync(user);
+      // await _unitOfWork.SaveChangesAsync();
+      await _unitOfWork.UserProfileRepository.AddAsync(userProfile);
+      await _unitOfWork.SaveChangesAsync();
+
+
+      var newUser = await _unitOfWork.UserRepository.GetByIdAsync(user.UserId);
+      return Ok(newUser);
     }
     catch (Exception ex)
     {

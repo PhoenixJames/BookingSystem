@@ -24,12 +24,16 @@ public class Repository<T> : IRepository<T> where T : class
     {
         await _context.Set<T>().AddAsync(entity);
     }
+    public async Task AddAsyncWithSaveChanges(T entity)
+    {
+        await _context.Set<T>().AddAsync(entity);
+        await _context.SaveChangesAsync();
+    }
 
     public async Task UpdateAsync(T entity)
     {
         _context.Set<T>().Update(entity);
     }
-
     public async Task DeleteAsync(long id)
     {
         var entity = await _context.Set<T>().FindAsync(id);
