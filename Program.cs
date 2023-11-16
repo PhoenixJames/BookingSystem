@@ -87,6 +87,7 @@ builder.Services.AddScoped<IClassRepository, ClassRepository>();
 builder.Services.AddScoped<IWaitlistRepository, WaitlistRepository>();
 // Adding Services
 builder.Services.AddScoped<IPackageService, PackageService>();
+builder.Services.AddScoped<IClassService, ClassService>();
 
 var app = builder.Build();
 
