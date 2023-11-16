@@ -24,3 +24,11 @@ public class UserProfileMappingProfile : Profile
         CreateMap<UserProfile, UserRegisterModel>();
     }
 }
+public class UserPackageMappingProfile : Profile 
+{
+    public UserPackageMappingProfile()
+    {
+        CreateMap<PurchasePackageModel, UserPackage>();
+        CreateMap<UserPackage, PurchasePackageModel>();
+    }
+}

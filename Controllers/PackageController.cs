@@ -15,16 +15,15 @@ namespace BookingSystem.Controllers;
 [Route("api/[controller]")]
 public class PackageController : ControllerBase
 {
-  private readonly IUnitOfWork _unitOfWork;
-  private readonly IMapper _mapper;
-  private readonly IConfiguration _config;
+  private readonly IPackageService _packageService;
 
 
-  public PackageController(IUnitOfWork unitOfWork, IMapper mapper, IConfiguration config)
+  public PackageController
+  (
+    IPackageService packageService
+  )
   {
-    _unitOfWork = unitOfWork;
-    _mapper = mapper;
-    _config = config;
+    _packageService = packageService;
   }
 
   [HttpGet("getAllPackage")]
@@ -32,8 +31,12 @@ public class PackageController : ControllerBase
   {
     try
     {
-      var users = await _unitOfWork.PackageRepository.GetAllAsync();
-      return Ok(users);
+      List<Package> packages = await _packageService.GetAllPackage();
+      if (packages.Count() == 0)
+      {
+        return Ok("No Record Found");
+      }
+      return Ok(packages);
     }
     catch (Exception ex)
     {
@@ -46,10 +49,12 @@ public class PackageController : ControllerBase
   {
     try
     {
-      var users = await _unitOfWork.PackageRepository
-        .Query()
-        .Where(p => p.Country == country).ToListAsync();
-      return Ok(users);
+      List<Package> packages = await _packageService.GetPackagesByCountry(country);
+      if (packages.Count() == 0)
+      {
+        return Ok("No Record Found");
+      }
+      return Ok(packages);
     }
     catch (Exception ex)
     {
@@ -58,25 +63,16 @@ public class PackageController : ControllerBase
   }
 
   [HttpPost("purchasePackage")]
-  public async Task<IActionResult> PurchasePackage([FromBody] PurchasePackageModel req)
+  public async Task<IActionResult> PurchasePackage([FromBody] PurchasePackageModel reqBody)
   {
     try
     {
-      if (req == null)
+      if (reqBody == null)
       {
         return BadRequest("req body is null.");
       }
-      User user = _mapper.Map<User>(userData);
-      user.IsActive = false;
-      UserProfile userProfile = _mapper.Map<UserProfile>(userData);
-      await _unitOfWork.UserRepository.AddAsync(user);
-      // await _unitOfWork.SaveChangesAsync();
-      await _unitOfWork.UserProfileRepository.AddAsync(userProfile);
-      await _unitOfWork.SaveChangesAsync();
-
-
-      var newUser = await _unitOfWork.UserRepository.GetByIdAsync(user.UserId);
-      return Ok(newUser);
+      await _packageService.PurchasePackage(reqBody);
+      return Ok("Package Purchase Successful.");
     }
     catch (Exception ex)
     {

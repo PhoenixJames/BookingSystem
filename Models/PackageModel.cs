@@ -44,18 +44,18 @@ namespace BookingSystem.Models
     public long PackageId { get; set; }
 
     [JsonProperty("purchaseDate")]
-    public DateTime PurchaseDate  { get; set; }
+    public DateTime? PurchaseDate  { get; set; }
 
     [JsonProperty("expiryDate")]
-    public DateTime ExpiryDate { get; set; }
+    public DateTime? ExpiryDate { get; set; }
 
     [JsonProperty("userCredits")]
-    public int UserCredits { get; set; }
+    public int? UserCredits { get; set; }
 
     [JsonProperty("createdDate")]
-    public DateTime CreatedDate { get; set; }
+    public DateTime? CreatedDate { get; set; }
 
     [JsonProperty("updatedDate")]
-    public DateTime UpdatedDate { get; set; }
+    public DateTime? UpdatedDate { get; set; }
   }
 }
